@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "io.github.openminigameserver.arcadium.mixins",
+  "minVersion": "0.8",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_11",
+  "mixins": [
+    "BlockPlacementListenerMixin",
+    "MinecraftServerMixin",
+    "NettyServerAccessor",
+    "NettyServerMixin",
+    "PacketDecoderMixin",
+    "PacketEncoderMixin",
+    "PlayerConnectionMixin",
+    "ServerBootstrapMixin"
+  ]
+}
