@@ -1,5 +1,7 @@
 package io.github.openminigameserver.arcadium
 
+import de.gerrygames.viarewind.api.ViaRewindConfigImpl
+import de.gerrygames.viarewind.api.ViaRewindPlatform
 import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.GameMode
 import net.minestom.server.event.player.PlayerLoginEvent
@@ -19,8 +21,8 @@ import io.github.openminigameserver.arcadium.via.MinestomViaPlatform
 import nl.matsv.viabackwards.ViaBackwards
 
 import io.github.openminigameserver.arcadium.via.backwards.MinestomViaBackwardsPlatform
-
-
+import io.github.openminigameserver.arcadium.via.rewind.MinestomViaRewindPlatform
+import java.io.File
 
 
 fun main(args: Array<String>) {
@@ -63,8 +65,21 @@ fun main(args: Array<String>) {
         player.respawnPoint = Position(0f, 55.0f, 0f)
     }
 
+    registerVia()
+
+    server.start(
+        "0.0.0.0", 25565
+    ) { connection, responseData ->
+        responseData.apply {
+            responseData.setDescription("NickArcade + Arcadium")
+        }
+    }
+}
+
+private fun registerVia() {
     //ViaVersion
     val platform = MinestomViaPlatform()
+    MinecraftServer.setCompressionThreshold(0)
     Via.init(
         ViaManager.builder()
             .injector(MinestomViaInjector())
@@ -75,13 +90,8 @@ fun main(args: Array<String>) {
     MinestomViaBackwardsPlatform().also {
         it.init(it.dataFolder)
     }
-    Via.getManager().init()
-
-    server.start(
-        "0.0.0.0", 25565
-    ) { connection, responseData ->
-        responseData.apply {
-            responseData.setDescription("NickArcade + Arcadium")
-        }
+    MinestomViaRewindPlatform().also {
+        it.init(ViaRewindConfigImpl(File("ViaRewind", "config.yml")))
     }
+    Via.getManager().init()
 }

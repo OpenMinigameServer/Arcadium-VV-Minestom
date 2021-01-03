@@ -32,6 +32,7 @@ dependencies {
     api("it.unimi.dsi:fastutil:8.3.1")
     implementation("com.github.ViaVersion.ViaVersion:viaversion:127cae80bd")
     implementation("com.github.ViaVersion.ViaBackwards:viabackwards-all:673239108c")
+    implementation("com.github.ViaVersion.ViaRewind:viarewind-all:7ffbbe024b")
     implementation("com.github.steveice10:opennbt:d50274d")
 }
 

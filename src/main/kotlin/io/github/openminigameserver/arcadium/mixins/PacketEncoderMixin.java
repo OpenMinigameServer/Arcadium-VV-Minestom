@@ -30,10 +30,11 @@ public class PacketEncoderMixin {
                 return;
             }
 
-            System.out.println(packet.getClass().getSimpleName());
             info.transformOutgoing(buf, CancelEncoderException::new);
         } catch (Exception e) {
             if (e instanceof CancelEncoderException) {
+                //System.out.println("Cancelled: " + packet.getClass().getSimpleName());
+                buf.clear();
                 ci.cancel();
             } else {
                 e.printStackTrace();
