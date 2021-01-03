@@ -39,7 +39,7 @@ fun main(args: Array<String>) {
         override fun generateChunkData(batch: ChunkBatch, chunkX: Int, chunkZ: Int) {
             for (x in 0 until Chunk.CHUNK_SIZE_X) for (z in 0 until Chunk.CHUNK_SIZE_Z) {
                 for (y in 0..54) {
-                    batch.setBlock(x, y, z, Block.STONE)
+                    batch.setBlock(x, y, z, if (x % 2 == 0 && z % 2 == 0) Block.RED_SAND else Block.SAND)
                 }
             }
         }

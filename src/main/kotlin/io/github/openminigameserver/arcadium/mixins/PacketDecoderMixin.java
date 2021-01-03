@@ -2,11 +2,12 @@ package io.github.openminigameserver.arcadium.mixins;
 
 import io.github.openminigameserver.arcadium.via.MinestomViaInjector;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import net.minestom.server.network.netty.codec.PacketDecoder;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import us.myles.ViaVersion.api.data.UserConnection;
 import us.myles.ViaVersion.exception.CancelDecoderException;
@@ -18,7 +19,13 @@ public class PacketDecoderMixin {
 
     @ModifyVariable(method = "decode", at = @At(value = "HEAD", ordinal = 0), argsOnly = true)
     public ByteBuf modifyBuffer(ByteBuf in) {
-        return in.alloc().buffer().writeBytes(in);
+        ByteBuf buf = in.alloc().buffer().writeBytes(in);
+        return buf;
+    }
+
+    @Inject(method = "decode", at = @At("TAIL"), cancellable = true)
+    public void onFinishDecode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> list, CallbackInfo ci) {
+        buf.retain();
     }
 
     @Inject(method = "decode", at = @At("HEAD"), cancellable = true)
